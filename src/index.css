@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply font-body text-fox-ink;
+  }
+  body {
+    @apply bg-fox-cream-50;
+    background-image: url("/tile-pattern.svg");
+    background-size: 220px 220px;
+    background-repeat: repeat;
+    background-attachment: fixed;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display text-fox-navy-700;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-fox-cream-200 bg-white/90 shadow-sm backdrop-blur-sm;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-xl bg-fox-yellow-500 px-4 py-2 font-semibold text-fox-navy-900 shadow-sm transition hover:bg-fox-yellow-600 active:translate-y-px;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center rounded-xl border border-fox-navy-500/20 px-4 py-2 font-medium text-fox-navy-700 transition hover:bg-fox-cream-100;
+  }
+}
