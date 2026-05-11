@@ -16,6 +16,12 @@
   h1, h2, h3, h4 {
     @apply font-display text-fox-navy-700;
   }
+  /* Accessible focus rings tuned to the brand palette */
+  :focus-visible {
+    outline: 2px solid theme("colors.fox.yellow.500");
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
 }
 
 @layer components {
@@ -23,9 +29,47 @@
     @apply rounded-2xl border border-fox-cream-200 bg-white/90 shadow-sm backdrop-blur-sm;
   }
   .btn-primary {
-    @apply inline-flex items-center justify-center rounded-xl bg-fox-yellow-500 px-4 py-2 font-semibold text-fox-navy-900 shadow-sm transition hover:bg-fox-yellow-600 active:translate-y-px;
+    @apply inline-flex items-center justify-center rounded-xl bg-fox-yellow-500 px-4 py-2 font-semibold text-fox-navy-900 shadow-sm transition hover:bg-fox-yellow-600 active:translate-y-px disabled:cursor-not-allowed disabled:bg-fox-cream-200 disabled:text-fox-ink/40 disabled:shadow-none;
   }
   .btn-ghost {
     @apply inline-flex items-center justify-center rounded-xl border border-fox-navy-500/20 px-4 py-2 font-medium text-fox-navy-700 transition hover:bg-fox-cream-100;
   }
+  .label {
+    @apply mb-1.5 block text-xs font-semibold uppercase tracking-[0.18em] text-fox-yellow-700;
+  }
+  .input {
+    @apply w-full rounded-xl border border-fox-cream-200 bg-white px-3.5 py-2.5 text-fox-ink placeholder:text-fox-ink/40 focus:border-fox-yellow-500/60 focus:bg-fox-cream-50/40 focus:outline-none;
+  }
+  .pill {
+    @apply inline-flex items-center gap-1 rounded-full bg-fox-yellow-500/15 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-widest text-fox-yellow-700;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────────────── */
+/* Bespoke animations                                                          */
+/* ────────────────────────────────────────────────────────────────────────── */
+
+@keyframes tileFloat {
+  0%, 100% { transform: translateY(0) rotate(var(--tilt, 0deg)); }
+  50%      { transform: translateY(-6px) rotate(var(--tilt, 0deg)); }
+}
+
+@keyframes tileFlipIn {
+  0%   { transform: rotateY(180deg) scale(0.9); opacity: 0; }
+  60%  { transform: rotateY(0deg) scale(1.04); opacity: 1; }
+  100% { transform: rotateY(0deg) scale(1); opacity: 1; }
+}
+
+@keyframes pulseRing {
+  0%   { box-shadow: 0 0 0 0 rgba(245, 184, 46, 0.55); }
+  100% { box-shadow: 0 0 0 14px rgba(245, 184, 46, 0); }
+}
+
+.seat-claim-anim {
+  animation: tileFlipIn 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-style: preserve-3d;
+}
+
+.seat-mine-glow {
+  animation: pulseRing 2.4s ease-out infinite;
 }
