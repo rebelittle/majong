@@ -45,10 +45,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     (async () => {
       try {
-        const { data } = await supabase.auth.getSession();
+        // Hard cap on getSession so a hung promise can't trap the UI forever.
+        // If it doesn't resolve in 8s, treat as unauthenticated. Real session
+        // restoration happens in localStorage; this just stops the UI hanging.
+        const sessionResult = await Promise.race([
+          supabase.auth.getSession(),
+          new Promise<{ data: { session: Session | null } }>((resolve) =>
+            setTimeout(() => resolve({ data: { session: null } }), 8000),
+          ),
+        ]);
         if (!mounted) return;
-        setSession(data.session);
-        if (data.session?.user) await loadProfile(data.session.user.id);
+        setSession(sessionResult.data.session);
+        if (sessionResult.data.session?.user) {
+          await loadProfile(sessionResult.data.session.user.id);
+        }
       } catch (err) {
         console.error("Auth init failed:", err);
       } finally {
